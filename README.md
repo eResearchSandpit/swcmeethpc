@@ -52,12 +52,11 @@ Python 2.6.6
 ```
 ### Square Matrix Multiplication
 Reminder : multiplying two N x N (real) matrices requires N multiplications and (N - 1) additions for each element. Since there are N<sup>2</sup> elements in the matrix this yields a total of N<sup>2</sup>(2N - 1) floating-point operations. For large values of N the total number of floating-point operations is around 2N<sup>3</sup>, so the complexity is  O(n<sup>3</sup>).<br>
-<p align="center">
-![Figure 1](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image00.png)<br>
-Figure 1 : Schematic diagram of matrix multiplication operation<br>
+![Figure 1](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image00.png) <br>
+Figure 1 : Schematic diagram of matrix multiplication operation <br>
 ![Figure 2](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image01.png)<br>
 Figure 2: Example of square matrix multiplication D=2<br>
-</p>
+
 More information about computational complexity of mathematical operations available in Wikipedia.<br>
 ### Performance Evaluation
 The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 100<sup>3</sup> = 1M
@@ -110,10 +109,8 @@ Numpy dot function: 0.143069982529
 **Speed-up** : 63,410 / 0.1431 = 443,116.7<br>
 
 In order to see the load in the compute node, we can increase the parameter N to 10000, and check the load with top or htop.
-<p align="center">
 ![Figure 3](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image02.png)<br>
 Figure 3 : CPU usage in the compute node.
-</p>
 ### Update GIT repo
 The changes in the Python scripts will be updated in the GitHub repo with the following commands:
 ```
