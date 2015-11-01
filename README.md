@@ -48,19 +48,19 @@ We will evaluate the performance of the first code using the default Python vers
 [build-sb swcmeethpc]$ python -V
 Python 2.6.6
 ```
-Reminder : multiplying two ```N x N``` (real) matrices requires ```N``` multiplications and ```(N - 1 )``` additions for each element. Since there are N2 elements in the matrix this yields a total of ```N2(2N - 1)``` floating-point operations. For large values of ```N``` the total number of floating-point operations is around ```2N3```, so the complexity is  ```O(n3)```.
+Reminder : multiplying two N x N (real) matrices requires N multiplications and (N - 1) additions for each element. Since there are N<sup>2</sup> elements in the matrix this yields a total of N<sup>2</sup>(2N - 1) floating-point operations. For large values of N the total number of floating-point operations is around 2N<sup>3</sup>, so the complexity is  O(n<sup>3</sup>).
 
-Figure 1: Example of square matrix multiplication ```D=2```
+Figure 1: Example of square matrix multiplication D=2
 
 Figure 2 : Schematic diagram of matrix multiplication operation
 More information about computational complexity of mathematical operations available in Wikipedia.
-The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 1003 = 1M
+The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 100<sup>3</sup> = 1M
 ```
 [build-sb swcmeethpc]$ python matmulti1.py
 Nested for loops:  63.4096159935
 ```
 How much time do I need for 1000x1000 elements?
-Number of floating-point operations : 10003 = 1000M
+Number of floating-point operations : 1000<sup>3</sup> = 1000M
 We should expect something around 63.410 x 1000 = 63,410s = 17.61h
 In this case we will use Numpy dot function to evaluate the same operation but with 1000x1000 matrices
 ```
