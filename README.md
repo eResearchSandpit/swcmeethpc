@@ -1,5 +1,6 @@
 # SWC skills in HPC cluster
 We will use simple python script to evaluate a square matrix multiplication using nested loops, Numpy dot function and also advanced Linear Algebra libraries. These scripts and this document are available in GitHub : https://github.com/jordiblasco/swcmeethpc 
+
 The first of all we will connect to the NeSI Pan cluster via SSH with the following command line:
 ```
 $ ssh user@login.uoa.nesi.org.nz -X -Y
@@ -50,58 +51,60 @@ Python 2.6.6
 ```
 Reminder : multiplying two N x N (real) matrices requires N multiplications and (N - 1) additions for each element. Since there are N<sup>2</sup> elements in the matrix this yields a total of N<sup>2</sup>(2N - 1) floating-point operations. For large values of N the total number of floating-point operations is around 2N<sup>3</sup>, so the complexity is  O(n<sup>3</sup>).
 
-Figure 1: Example of square matrix multiplication D=2
+Figure 1: Example of square matrix multiplication D=2<br>
 
-Figure 2 : Schematic diagram of matrix multiplication operation
-More information about computational complexity of mathematical operations available in Wikipedia.
+Figure 2 : Schematic diagram of matrix multiplication operation<br>
+
+More information about computational complexity of mathematical operations available in Wikipedia.<br>
 The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 100<sup>3</sup> = 1M
 ```
 [build-sb swcmeethpc]$ python matmulti1.py
 Nested for loops:  63.4096159935
 ```
-How much time do I need for 1000x1000 elements?
-Number of floating-point operations : 1000<sup>3</sup> = 1000M
-We should expect something around 63.410 x 1000 = 63,410s = 17.61h
+How much time do I need for 1000x1000 elements?<br>
+Number of floating-point operations : 1000<sup>3</sup> = 1000M<br>
+We should expect something around 63.410 x 1000 = 63,410s = 17.61h<br>
 In this case we will use Numpy dot function to evaluate the same operation but with 1000x1000 matrices
 ```
 [build-sb swcmeethpc]$ python matmulti2.py
 Numpy dot function: 73.6630949974
 ```
-Speed-up : 63,410 / 73.6 = 861.5
+Speed-up : 63,410 / 73.6 = 861.5<br>
 Using Python 2.7.9 compiled with Intel Compilers and using advanced linear algebra libraries (MKL)
 ```
 [build-sb swcmeethpc]$ ml Python/2.7.9-intel-2015a
 [build-sb swcmeethpc]$ python -V
 Python 2.7.9
 ```
-Force to use only one CPU
+Force to use only one CPU<br>
 ```
 [build-sb swcmeethpc]$ export MKL_NUM_THREADS=1
 [build-sb swcmeethpc]$ python matmulti2.py
 Numpy dot function: 0.886467933655
 ```
-Speed-up : 63,410 / 0.886 = 71,568.8
+Speed-up : 63,410 / 0.886 = 71,568.8<br>
 Force to use four CPUs
 ```
 [build-sb swcmeethpc]$ export MKL_NUM_THREADS=4
 [build-sb swcmeethpc]$ python matmulti2.py
 Numpy dot function: 0.257395982742
 ```
-Speed-up : 63,410 / 0.257 = 246,731.5
+Speed-up : 63,410 / 0.257 = 246,731.5<br>
 Force to use eight CPUs
 ```
 [build-sb swcmeethpc]$ export MKL_NUM_THREADS=8
 [build-sb swcmeethpc]$ python matmulti2.py
 Numpy dot function: 0.162317037582
 ```
-Speed-up : 63,410 / 0.162 = 391,419.8
+Speed-up : 63,410 / 0.162 = 391,419.8<br>
 Force to use only one CPU and one GPU
 ```
 [build-sb swcmeethpc]$ export MKL_NUM_THREADS=1
 [build-sb swcmeethpc]$ LD_PRELOAD=/share/easybuild/RHEL6.3/sandybridge/software/CUDA/6.5.14/lib64/libnvblas.so python matmulti2.py
 Numpy dot function: 0.143069982529
 ```
-Speed-up : 63,410 / 0.1431 = 443,116.7
+Speed-up : 63,410 / 0.1431 = 443,116.7<br>
+
 In order to see the load in the compute node, we can increase the parameter N to 10000, and check the load with top or htop.
 The changes in the Python scripts will be updated in the GitHub repo with the following commands:
 ```
