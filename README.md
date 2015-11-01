@@ -57,7 +57,7 @@ Figure 1 : Schematic diagram of matrix multiplication operation <br>
 ![Figure 2](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image01.png)<br>
 Figure 2: Example of square matrix multiplication D=2<br>
 
-More information about computational complexity of mathematical operations available in Wikipedia.<br>
+More information about computational complexity of mathematical operations available in [Wikipedia](https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations).<br>
 ### Performance Evaluation
 The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 100<sup>3</sup> = 1M
 ```
