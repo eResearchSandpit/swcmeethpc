@@ -11,7 +11,7 @@ def wrapper(func, *args, **kwargs):
         return func(*args, **kwargs)
     return wrapped
 
-N=10000
+N=1000
 X=np.matlib.rand(N,N)
 Y=np.matlib.rand(N,N)
 
