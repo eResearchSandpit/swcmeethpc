@@ -54,6 +54,7 @@ Python 2.6.6
 Reminder : multiplying two N x N (real) matrices requires N multiplications and (N - 1) additions for each element. Since there are N<sup>2</sup> elements in the matrix this yields a total of N<sup>2</sup>(2N - 1) floating-point operations. For large values of N the total number of floating-point operations is around 2N<sup>3</sup>, so the complexity is  O(n<sup>3</sup>).<br>
 ![Figure 1](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image00.png) <br>
 Figure 1 : Schematic diagram of matrix multiplication operation <br>
+
 ![Figure 2](https://github.com/jordiblasco/swcmeethpc/blob/master/images/image01.png)<br>
 Figure 2: Example of square matrix multiplication D=2<br>
 
