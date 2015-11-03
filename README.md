@@ -60,13 +60,13 @@ Figure 2: Example of square matrix multiplication D=2<br>
 
 More information about computational complexity of mathematical operations available in [Wikipedia](https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations).<br>
 ### Performance Evaluation
-The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is 100<sup>3</sup> = 1M
+The first code will evaluate a square matrix multiplication of 100x100 real elements using nested for loops. The expected number of floating-point operations is ~ 200<sup>3</sup> = 2M
 ```
 [build-sb swcmeethpc]$ python matmulti1.py
 Nested for loops:  63.4096159935
 ```
 **How much time do I need for 1000x1000 elements?**<br>
-Number of floating-point operations : 1000<sup>3</sup> = 1000M<br>
+Number of floating-point operations : ~ 2000<sup>3</sup> = 2000M<br>
 We should expect something around 63.410 x 1000 = 63,410s = 17.61h<br>
 In this case we will use Numpy dot function to evaluate the same operation but with 1000x1000 matrices
 ```
