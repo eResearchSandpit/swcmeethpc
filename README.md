@@ -129,3 +129,32 @@ Total 4 (delta 2), reused 0 (delta 0)
 To ssh://git@github.com/jordiblasco/swcmeethpc.git
    cca9db1..9947160  master -> master
 ```
+### Submit jobs to batch queue system (Slurm)
+
+```
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu example-01.sl
+Submitted batch job 27482478
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu example-02.sl
+Submitted batch job 27482479
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu example-03.sl
+Submitted batch job 27482480
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu example-04.sl
+Submitted batch job 27482481
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu --cpus-per-task=8 example-04.sl
+Submitted batch job 27482482
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu --cpus-per-task=16 example-04.sl
+Submitted batch job 27482483
+[jbla572@build-sb swcmeethpc]$ sbatch --reservation=edu example-05.sl
+Submitted batch job 27482484
+[jbla572@build-sb swcmeethpc]$ squ
+             JOBID PARTITION PRIOR     NAME     USER    STATE       TIME  TIME_LIMIT  NODES CPUS   GRES           START_TIME     NODELIST(REASON)      QOS
+          27482478     merit 41000 DefaultS  jbla572  PENDING       0:00        5:00      1    1 (null)                  N/A        (Reservation)   normal
+          27482479     merit 41000 DefaultS  jbla572  PENDING       0:00        5:00      1    1 (null)                  N/A        (Reservation)   normal
+          27482480     merit 41000 TunedVer  jbla572  PENDING       0:00        5:00      1    1 (null)                  N/A        (Reservation)   normal
+          27482481     merit 41000 TunedVer  jbla572  PENDING       0:00        5:00      1    4 (null)                  N/A        (Reservation)   normal
+          27482482     merit 41000 TunedVer  jbla572  PENDING       0:00        5:00      1    8 (null)                  N/A        (Reservation)   normal
+          27482483     merit 41000 TunedVer  jbla572  PENDING       0:00        5:00      1   16 (null)                  N/A        (Reservation)   normal
+          27482484     merit 41000 GPUVersi  jbla572  PENDING       0:00        5:00      1    1  gpu:1                  N/A        (Reservation)   normal
+
+7 job(s) queued, 7 pending, 0 running, 0 suspended
+```
