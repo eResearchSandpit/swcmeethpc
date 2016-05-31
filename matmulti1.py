@@ -28,5 +28,9 @@ Y = np.random.rand(N,N)
 # set the number of times the multiplication will be repeated
 Ntimes = 10
 
-# run matrix multiplication "Ntimes" times and print average timing
-print "Nested for loops: ", timeit.timeit(wrapper(matmul,X,Y), number = 10)/Ntimes
+# run matrix multiplication "Ntimes" times and get runtime minimum
+best_runtime = min(timeit.repeat(wrapper(matmul,X,Y), number = 1, repeat = Ntimes))
+
+# output
+print "Running nested for loops {} times...".format(Ntimes)
+print "Best runtime [seconds]: {:.4}".format(best_runtime)
