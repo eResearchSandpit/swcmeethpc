@@ -2,7 +2,7 @@
 
 We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our case is a lot simpler, but we still have to make sure that everything works.
 
-In the case of the Pan HPC, we need to use a build node to perform test runs with our program. We will therefore log on to another computer from the login node:
+In the case of the Pan HPC, we need to use a build node to perform test runs with our program. Since HPCs consist of many computers that are connected in a fast network, they are called "nodes". We will log on to another computer from the login node:
 ```{bash}
 [login-01 ~]$ ssh build-sb
 ```
@@ -20,7 +20,7 @@ build-sb
 
 Note that we have effectively chained the `ssh` sessions: our computer connects to the login node, and the login node connects to the build node.
 
-We are still in the same user space, since both the login node and the build node have access to the same file system:
+We are still in the same user space, since both the login node and the build node have access to the same file system on the network - both computers can see the exact same files:
 ```
 [user@build-sb ~]$ pwd
 ```
@@ -60,19 +60,19 @@ We can run the example directly on the remote computer:
 [user@build-sb ~]$ python matmulti1.py
 ```
 ~~~ {.python}
-Nested for loops:  6.74816219807
+Running nested for loops 10 times...
+Best runtime [seconds]: 1.035
 ~~~
-
-The program will return the time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.
+The program returns the best time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.
 
 We can use Python to calculate the FLOPS performance, given that the processor needed to perform about $2N^3=2,000,000$ floating-point operations to compute the result in each iteration:
 ```
-[user@build-sb ~]$ python -c "print(2.e6/6.75)"
+[user@build-sb ~]$ python -c "print(2.e6/1.035)"
 ```
 ~~~ {.python}
-296296.296296
+1932367.14976
 ~~~
-We achieved 296 kFLOPS for our example, which is far below the processor's numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.
+We achieved 1.9 MFLOPS for our example, which is far below the processor's numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.
 
 > ## Challenge
 >

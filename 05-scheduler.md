@@ -55,5 +55,6 @@ The file contains the output that we would have seen if we had run the program i
 [user@build-sb swcmeethpc]$ cat slurm-31632453.out
 ```
 ~~~ {.output}
-Nested for loops:  8.28628749847
+Running nested for loops 10 times...
+Best runtime [seconds]: 1.281
 ~~~

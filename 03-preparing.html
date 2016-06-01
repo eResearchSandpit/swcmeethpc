@@ -64,14 +64,14 @@ img {
 <div id="preparing-code-for-running-on-a-hpc" class="section level1">
 <h1>Preparing code for running on a HPC</h1>
 <p>We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our case is a lot simpler, but we still have to make sure that everything works.</p>
-<p>In the case of the Pan HPC, we need to use a build node to perform test runs with our program. We will therefore log on to another computer from the login node:</p>
+<p>In the case of the Pan HPC, we need to use a build node to perform test runs with our program. Since HPCs consist of many computers that are connected in a fast network, they are called “nodes”. We will log on to another computer from the login node:</p>
 <pre class="{bash}"><code>[login-01 ~]$ ssh build-sb</code></pre>
 <pre class="output"><code>[user@build-sb ~]$</code></pre>
 <p>We are now yet again on a different machine:</p>
 <pre class="{bash}"><code>[user@build-sb ~]$ uname -n</code></pre>
 <pre class="output"><code>build-sb</code></pre>
 <p>Note that we have effectively chained the <code>ssh</code> sessions: our computer connects to the login node, and the login node connects to the build node.</p>
-<p>We are still in the same user space, since both the login node and the build node have access to the same file system:</p>
+<p>We are still in the same user space, since both the login node and the build node have access to the same file system on the network - both computers can see the exact same files:</p>
 <pre><code>[user@build-sb ~]$ pwd</code></pre>
 <pre class="output"><code>/home/user</code></pre>
 <p>Let’s go to our example again and check the Python version that is installed on the system:</p>

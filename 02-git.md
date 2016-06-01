@@ -34,10 +34,11 @@ Let's have a look at the repository contents:
 [user@login-01 ~]$ ls
 ```
 ~~~ {.output}
-example-01.sl  example-03.sl  example-05.sl  matmulti1.py  nvblas.conf  README.md
-example-02.sl  example-04.sl  images         matmulti2.py  nvblas.log
+01-ssh.html  03-preparing.html     05-scheduler.html  example-03.sl  matmulti1.py  README.html
+01-ssh.md    03-preparing.md       05-scheduler.md    example-04.sl  matmulti2.py  README.md
+02-git.html  04-optimisation.html  example-01.sl      example-05.sl  nvblas.conf   ssh-keypairs.html
+02-git.md    04-optimisation.md    example-02.sl      images         nvblas.log    ssh-keypairs.md
 ~~~
-**TO BE UPDATED**
 
 > ## Challenge
 >

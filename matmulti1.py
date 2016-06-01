@@ -32,5 +32,5 @@ Ntimes = 10
 best_runtime = min(timeit.repeat(wrapper(matmul,X,Y), number = 1, repeat = Ntimes))
 
 # output
-print "Running nested for loops {} times...".format(Ntimes)
-print "Best runtime [seconds]: {:.4}".format(best_runtime)
+print "Running nested for loops {0} times...".format(Ntimes)
+print "Best runtime [seconds]: {0:.4}".format(best_runtime)
