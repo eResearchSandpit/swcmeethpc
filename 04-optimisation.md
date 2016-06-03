@@ -40,7 +40,7 @@ Python 2.7.9
 ~~~
 The `module load` command changes the shell environment, allowing us to override the standard version of Python with the "accelerated" version.
 
-Let's run the same example again. We first have to tell the MKL how many processors it should use by setting a so-called "environment variable" - MKL can use several processors in parallel to compute the results, enabling further speedups:
+Let's run the same example again. We first have to tell MKL how many processors it should use by setting a so-called "environment variable". Environment variables work like `bash` variables, but they can be read by every program, not only `bash`. In this case, we use variable "MKL\_NUM\_THREADS" to tell MKL that it should use one processor for now to compute the results:
 ```
 [user@build-sb swcmeethpc]$ export MKL_NUM_THREADS=1
 [user@build-sb swcmeethpc]$ python matmulti2.py
@@ -52,7 +52,7 @@ Best runtime [seconds]: 0.08726
 
 This is $7.084/0.08726\approx 81$ times faster than the standard version of Python, resulting in a performance of about 23 GFLOPS.
 
-Now we can try 4 processors:
+Now we can tell MKL to use 4 processors:
 ```
 [user@build-sb swcmeethpc]$ export MKL_NUM_THREADS=4
 [user@build-sb swcmeethpc]$ python matmulti2.py

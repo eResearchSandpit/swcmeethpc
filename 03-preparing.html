@@ -89,12 +89,13 @@ img {
 <p>The algorithm uses three nested loops to compute the output matrix. A timing utility is used to measure the time needed to multiply matrices with <span class="math">\(N=100\)</span> rows and columns, repeating the process several times to obtain a mean value.</p>
 <p>We can run the example directly on the remote computer:</p>
 <pre><code>[user@build-sb ~]$ python matmulti1.py</code></pre>
-<pre class="python"><code>Nested for loops:  6.74816219807</code></pre>
-<p>The program will return the time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.</p>
+<pre class="python"><code>Running nested for loops 10 times...
+Best runtime [seconds]: 1.035</code></pre>
+<p>The program returns the best time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.</p>
 <p>We can use Python to calculate the FLOPS performance, given that the processor needed to perform about <span class="math">\(2N^3=2,000,000\)</span> floating-point operations to compute the result in each iteration:</p>
-<pre><code>[user@build-sb ~]$ python -c &quot;print(2.e6/6.75)&quot;</code></pre>
-<pre class="python"><code>296296.296296</code></pre>
-<p>We achieved 296 kFLOPS for our example, which is far below the processor’s numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.</p>
+<pre><code>[user@build-sb ~]$ python -c &quot;print(2.e6/1.035)&quot;</code></pre>
+<pre class="python"><code>1932367.14976</code></pre>
+<p>We achieved 1.9 MFLOPS for our example, which is far below the processor’s numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.</p>
 <blockquote>
 <h2>Challenge</h2>
 <p>Explain which program runs on which computer when you connect to a remote computer from your own laptop, and then to another remote computer from the first remote one? Which difficulties could appear when you do that? Can you always expect the same file system?</p>

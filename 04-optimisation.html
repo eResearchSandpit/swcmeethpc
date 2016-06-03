@@ -63,7 +63,7 @@ img {
 
 <div id="optimising-performance" class="section level1">
 <h1>Optimising performance</h1>
-<p>Extrapolating from our previous result for <span class="math">\(N=100\)</span>, we can estimate how long it would take to multiply matrices with <span class="math">\(N=1000\)</span>: the number of floating-point operations increases by a factor of <span class="math">\(1000\)</span>, owing to complexity of matrix multiplication. It would therefore take roughly <span class="math">\(6.75*1000=6750\)</span> seconds or almost 2 hours to obtain the result, and matrix multiplication is probably just one step of a real-world application!</p>
+<p>Extrapolating from our previous result for <span class="math">\(N=100\)</span>, we can estimate how long it would take to multiply matrices with <span class="math">\(N=1000\)</span>: the number of floating-point operations increases by a factor of <span class="math">\(1000\)</span>, owing to complexity of matrix multiplication. It would therefore take roughly <span class="math">\(1.035*1000=1035\)</span> seconds or 17 minutes to obtain the result, and matrix multiplication is probably just one step of a real-world application!</p>
 <p>We already saw that our CPU should be able to compute a lot faster, so we can try to optimise our program to speed things up. Such optimisation can be a difficult topic - every program will require careful analysis to find bottlenecks and custom solutions to remove them, which can take a long time.</p>
 <p>The situation is much simpler in our case. The first thing we can do is to use the <code>NumPy</code> package rather than implementing the matrix multiplication algorithm ourselves - apart from much better performance, we will also have the added benefit of using a well-tested and robust implementation of matrix multiplication, which reduces the risk of getting wrong results.</p>
 <p>Let’s look at the second implementation of matrix multiplication:</p>
@@ -71,32 +71,38 @@ img {
 <p>Our own algorithm is now replaced by the <code>dot</code> function implemented in the <code>NumPy</code> package.</p>
 <p>We run this example with <span class="math">\(N=1000\)</span>:</p>
 <pre><code>[user@build-sb swcmeethpc]$ python matmulti2.py</code></pre>
-<pre class="output"><code>NumPy dot function: 7.66896131039</code></pre>
+<pre class="output"><code>Running NumPy dot function 10 times...
+Best runtime [seconds]: 7.084</code></pre>
 <p>We just computed <span class="math">\(2,000,000,000\)</span> or 2 billion floating-point operations for each iteration, so we can get another performance estimate:</p>
-<pre><code>[user@build-sb ~]$ python -c &quot;print(2.e9/7.67)&quot;</code></pre>
-<pre class="python"><code>260756192.96</code></pre>
-<p>We now reached 261 MFLOPS - this is much better than before, the speed-up is about <span class="math">\(6750/7.67\approx 880\)</span>, which is a dramatic improvement. And yet, we are still relatively far away from optimal performance of modern processors.</p>
+<pre><code>[user@build-sb ~]$ python -c &quot;print(2.e9/7.084)&quot;</code></pre>
+<pre class="python"><code>282326369.283</code></pre>
+<p>We now reached 282 MFLOPS - this is much better than before, the speed-up is about <span class="math">\(1035/7.084\approx 146\)</span>, which is a dramatic improvement. And yet, we are still relatively far away from optimal performance of modern processors.</p>
 <p>Matrix multiplications is a standard problem for which processor makers offer highly optimised implementations, such as Intel’s MKL or AMD’s ACML for CPUs, and Nvidia’s cuBLAS for GPUs. They allow us to use a processor’s maximal performance with very little effort. For our Python example, which can simply use a Python version that has been built with the Intel MKL, so that <code>NumPy</code> will use this fast math library when computing matrix multiplication:</p>
 <pre><code>[user@build-sb swcmeethpc]$ module load Python/2.7.9-intel-2015a
 [user@build-sb swcmeethpc]$ python --version</code></pre>
 <pre class="output"><code>Python 2.7.9</code></pre>
 <p>The <code>module load</code> command changes the shell environment, allowing us to override the standard version of Python with the “accelerated” version.</p>
-<p>Let’s run the same example again. We first have to tell the MKL how many processors it should use by setting a so-called “environment variable” - MKL can use several processors in parallel to compute the results, enabling further speedups:</p>
+<p>Let’s run the same example again. We first have to tell MKL how many processors it should use by setting a so-called “environment variable”. Environment variables work like <code>bash</code> variables, but they can be read by every program, not only <code>bash</code>. In this case, we use variable “MKL_NUM_THREADS” to tell MKL that it should use one processor for now to compute the results:</p>
 <pre><code>[user@build-sb swcmeethpc]$ export MKL_NUM_THREADS=1
 [user@build-sb swcmeethpc]$ python matmulti2.py</code></pre>
-<pre class="output"><code>NumPy dot function: 0.0965677022934</code></pre>
-<p>This is <span class="math">\(7.67/0.0966\approx 79\)</span> times faster than the standard version of Python, resulting in a performance of about 21 GFLOPS.</p>
-<p>Now we can try 4 processors:</p>
+<pre class="output"><code>Running NumPy dot function 10 times...
+Best runtime [seconds]: 0.08726</code></pre>
+<p>This is <span class="math">\(7.084/0.08726\approx 81\)</span> times faster than the standard version of Python, resulting in a performance of about 23 GFLOPS.</p>
+<p>Now we can tell MKL to use 4 processors:</p>
 <pre><code>[user@build-sb swcmeethpc]$ export MKL_NUM_THREADS=4
 [user@build-sb swcmeethpc]$ python matmulti2.py</code></pre>
-<pre class="output"><code>NumPy dot function: 0.0318387985229</code></pre>
-<p>This is <span class="math">\(0.0966/0.0318\approx 3\)</span> times faster than running on processor, and results in a performance of about 63 GFLOPS.</p>
+<pre class="output"><code>Running NumPy dot function 10 times...
+Best runtime [seconds]: 0.02455
+</code></pre>
+<p>This is <span class="math">\(0.08726/0.02455\approx 3.6\)</span> times faster than running on processor, and results in a performance of about 81 GFLOPS.</p>
 <p>And finally 8 processors:</p>
 <pre><code>[user@build-sb swcmeethpc]$ export MKL_NUM_THREADS=8
 [user@build-sb swcmeethpc]$ python matmulti2.py</code></pre>
-<pre class="output"><code>NumPy dot function: 0.0206004142761</code></pre>
-<p>This is <span class="math">\(0.0318/0.0206=1.54\)</span> times faster then the previous result, and equivalent to about 97 GFLOPS.</p>
-<p>Note that performance is not proportional to the number of processors used - parallel computation does not always “scale linearly”. Nevertheless, we achieved a total speedup of more than 300,000 between our initial version that uses nested loops and our last test the fast math library on 8 processors!</p>
+<pre class="output"><code>Running NumPy dot function 10 times...
+Best runtime [seconds]: 0.01257</code></pre>
+<p>This is <span class="math">\(0.02455/0.01257\approx 2\)</span> times faster then the previous result, and equivalent to about 159 GFLOPS.</p>
+<p>To get back to our standard version of Python, we will need to unload the module:</p>
+<pre><code>module unload Python/2.7.9-intel-2015a</code></pre>
 </div>
 
 
