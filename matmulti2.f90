@@ -29,7 +29,8 @@ PROGRAM matmulti2
   END DO
 
   ! output
-  PRINT *, "Running nested for loops", NTIMES, "times..."
+  PRINT *, "Running MATMUL intrinsic function", NTIMES, "times..."
   PRINT *, "Best runtime [seconds]:", best_runtime
+  PRINT *, "Performance [GFLOPS]:", 2.d-9*DBLE(SIZE)**3/best_runtime
 
 END PROGRAM matmulti2

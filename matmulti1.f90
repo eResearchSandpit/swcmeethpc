@@ -2,7 +2,7 @@ PROGRAM matmulti1
   IMPLICIT NONE
 
   ! set number of rows and columns
-  INTEGER, PARAMETER :: SIZE = 100
+  INTEGER, PARAMETER :: SIZE = 1000
 
   ! set the number of times the multiplication will be repeated
   INTEGER, PARAMETER :: NTIMES = 10
@@ -29,8 +29,9 @@ PROGRAM matmulti1
   END DO
 
   ! output
-  PRINT *, "Running nested for loops", NTIMES, "times..."
+  PRINT *, "Running nested do loops", NTIMES, "times..."
   PRINT *, "Best runtime [seconds]:", best_runtime
+  PRINT *, "Performance [GFLOPS]:", 2.d-9*DBLE(SIZE)**3/best_runtime
 
 CONTAINS
 
