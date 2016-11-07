@@ -91,7 +91,7 @@ Version: 14.01.0000.0012</code></pre>
 </code></pre>
 <pre class="output"><code>** matmulti3   === End of Compilation 1 ===
 1501-510  Compilation successful for file matmulti3.f90.</code></pre>
-<p>Note the new flag <code>-lessl</code>, which instructs the compiler to include ESSL in our executable. The library implements the routine “DGEMM”, which is part of (Basic Linear Algebra Subprograms) and performs matrix multiplications using a very fast implementation.</p>
+<p>Note the new flag <code>-lessl</code>, which instructs the compiler to include ESSL in our executable. Libraries are collections of ready-made functions. ESSL implements the function “DGEMM”, which is part of BLAS (Basic Linear Algebra Subprograms) and performs matrix multiplications very quickly.</p>
 <p>Let’s run the code:</p>
 <pre><code>-bash-4.2$ ./matmulti3.x
 </code></pre>
@@ -99,6 +99,10 @@ Version: 14.01.0000.0012</code></pre>
  Best runtime [seconds]: 0.150283000000000000
  Performance [GFLOPS]: 13.3082251485530634</code></pre>
 <p>We now reach more than 13 GFLOPS, or another speedup of 5 over our own Fortran program. Compared to our original Python program, we have reached a speedup of more than 60,000…</p>
+<blockquote>
+<h2>Challenge</h2>
+<p>Why is the <code>python</code> program still needed to run a code written in Python language, while the <code>xlf90</code> program is not needed to run a Fortran code? Hint: look at the files “matmulti1.py”, “matmulti1.f90”, and “matmulti1.x” using the <code>less</code> program; you will need to confirm that you want to look at binary file “matmulti1.x” by typing “y”. Will the microprocessor understand the Python code in “matmulti1.py” or the Fortran code in “matmulti1.f90”? Can you understand the content of “matmulti1.x”?</p>
+</blockquote>
 </div>
 
 

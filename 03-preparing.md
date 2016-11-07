@@ -1,41 +1,24 @@
 # Preparing code for running on a HPC
 
-We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our case is a lot simpler, but we still have to make sure that everything works.
+We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our examples are a lot simpler, but we still have to make sure that everything works.
 
-In the case of the Pan HPC, we need to use a build node to perform test runs with our program. Since HPCs consist of many computers that are connected in a fast network, they are called "nodes". We will log on to another computer from the login node:
-```{bash}
-[login-01 ~]$ ssh build-sb
+We will need Python for our first example. Let's check which version of Python is available on Fitzroy:
+```
+-bash-4.2$ cd matmul/swcmeethpc
+-bash-4.2$ python --version
 ```
 ~~~ {.output}
-[user@build-sb ~]$
+Python 2.6.7
 ~~~
-
-We are now yet again on a different machine:
-```{bash}
-[user@build-sb ~]$ uname -n
+The default version does not provide the NumPy package that we will need for our examples. We will need to load a different version, which can be done with the ```module``` command:
+```
+-bash-4.2$ module load python/2.7.5
+-bash-4.2$ python --version
 ```
 ~~~ {.output}
-build-sb
+Python 2.7.5
 ~~~
-
-Note that we have effectively chained the `ssh` sessions: our computer connects to the login node, and the login node connects to the build node.
-
-We are still in the same user space, since both the login node and the build node have access to the same file system on the network - both computers can see the exact same files:
-```
-[user@build-sb ~]$ pwd
-```
-~~~ {.output}
-/home/user
-~~~
-
-Let's go to our example again and check the Python version that is installed on the system:
-```
-[user@build-sb ~]$ cd matmul/swcmeethpc
-[user@build-sb swcmeethpc]$ python --version
-```
-~~~ {.output}
-Python 2.6.6
-~~~
+The module command is a very easy way to customise the work environment, allowing us to choose between different software packages. A complete list of available packages can be shown using the command ```module avail```.
 
 ## Matrix Multiplication
 
@@ -51,29 +34,33 @@ More information about computational complexity of mathematical operations is av
 
 Let's look at a simple implementation of matrix multiplication:
 ```
-[user@build-sb ~]$ cat matmulti1.py
+-bash-4.2$ cat matmulti1.py
 ```
 The algorithm uses three nested loops to compute the output matrix. A timing utility is used to measure the time needed to multiply matrices with $N=100$ rows and columns, repeating the process several times to obtain a mean value.
 
 We can run the example directly on the remote computer:
 ```
-[user@build-sb ~]$ python matmulti1.py
+-bash-4.2$ python matmulti1.py
 ```
 ~~~ {.python}
 Running nested for loops 10 times...
-Best runtime [seconds]: 1.035
+Best runtime [seconds]: 9.944
 ~~~
 The program returns the best time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.
 
 We can use Python to calculate the FLOPS performance, given that the processor needed to perform about $2N^3=2,000,000$ floating-point operations to compute the result in each iteration:
 ```
-[user@build-sb ~]$ python -c "print(2.e6/1.035)"
+-bash-4.2$ python -c "print(2.e6/9.944)"
 ```
 ~~~ {.python}
-1932367.14976
+201126.307321
 ~~~
-We achieved 1.9 MFLOPS for our example, which is far below the processor's numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.
+We achieved 200 KFLOPS for our example, which is far below the processor's numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations. It also has to do with the age of the POWER6 microprocessor; modern processors can do a lot more FLOPS.
 
 > ## Challenge
 >
-> Explain which program runs on which computer when you connect to a remote computer from your own laptop, and then to another remote computer from the first remote one? Which difficulties could appear when you do that? Can you always expect the same file system?
+> How would you expect runtime to (approximately) change when doubling matrix size $N$?
+> 1. No change
+> 2. Runtime doubles
+> 3. Runtime extends by a factor of 4
+> 3. Runtime extends by a factor of 8

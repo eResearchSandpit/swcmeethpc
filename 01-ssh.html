@@ -67,88 +67,94 @@ img {
 <p>The <code>ssh</code> (Secure Shell) prgram has become very popular, allowing users to “remote control” a computer using the same (or similar) shell that they use on their local computer. All data transfer is encrypted, <code>ssh</code> can therefore be used on any public network.</p>
 <p>Before we can connect to a remote computer, we first need to get access by asking a system administrator for a user account. Once the account has been created, the system administrator will provide a user name and password, or will ask for the public key of a key pair that was generated with <code>ssh-keygen</code>.</p>
 <p>We can now open a terminal (Git Bash for Windows users) and type the following command, replacing “user” with the account name given to you:</p>
-<pre class="{bash}"><code>$ ssh user@login.uoa.nesi.org.nz</code></pre>
-<pre class="output"><code>
-      *******************************************************************
-      **         Welcome to Pan, the NeSI Intel x86-64 Cluster         **
-      **                                                               **
-      **  This high-performance computing cluster is operated by the   **
-      **  University of Auckland Centre for eResearch as part of the   **
-      **             New Zealand eScience Infrastructure.              **
-      **                                                               **
-      *******************************************************************
+<pre class="{bash}"><code>$ ssh user@fitzroy.nesi.org.nz</code></pre>
+<pre class="output"><code>    __  _   __ _   _   __  __
+   /  |/ / / /| | / | / / /  |  National Institute of
+  /  |  / / / | |/ /|/ / / / |  Water and Atmospheric
+ /__/|_/ /_/  |_/_/ |_/ /_/|_|  Research Ltd
 
-      For a list of your current projects, run show_my_projects.
-      To see your current quota usage, run fs_my_quota_usage.
 
-      For documentation, visit https://wiki.auckland.ac.nz/x/CA-sAg.
+  By using this this computer system you accept and agree to the NIWA IT security and usage policies.
+  To ensure compliance with legal requirements and to maintain cyber security standards,
+  NIWAs IT systems are subject to ongoing monitoring, activity logging and auditing.
+  This monitoring and auditing service may be provided by third parties.
+  Such third parties can access information transmitted to, processed by and stored on NIWA's IT systems.
 
-      To build or test software, use one of the build nodes:
-                ssh build-wm (Westmere)
-                ssh build-sb (SandyBridge)
+Documentation:
+  Fitzroy documentation is available here: https://teamwork.niwa.co.nz/x/NwGP
 
-[user@login-01 ~]$</code></pre>
+Support:
+  NeSI website: https://support.nesi.org.nz
+  by email to fitzroy@nesi.org.nz
+
+Quota:
+  [home]        17535 files    5GB / 100GB     5.07%
+-bash-4.2$</code></pre>
 <p>Depending on account setup, <code>ssh</code> will ask for a password, or it can even log in without a password if our public key file has been installed on the remote computer by the system administrator. If everything goes well, the remote computer will greet us with a welcome message and some general information.</p>
 <blockquote>
 <h2>Warning message about host authenticity</h2>
 <p>When you connect to a remote computer for the first time with <code>ssh</code>, you should see a warning message:</p>
-<pre class="output"><code>The authenticity of host 'login.uoa.nesi.org.nz (130.216.161.186)' can't be established.
-RSA key fingerprint is [...]
+<pre class="output"><code>The authenticity of host 'fitzroy.nesi.org.nz (202.36.29.80)' can't be established.
+ECDSA key fingerprint is SHA256:3FRdou5588zzSw6du2YfNYeASFSx3y4seMVtqTPhjPg.
 Are you sure you want to continue connecting (yes/no)?</code></pre>
-<p>This is a security warning - if you want to be sure that you are indeed connecting to the computer “login.uoa.nesi.org.nz”, you will need to verifying the key fingerprint with a system administrator. If you are satisfied that everything is correct, confirm by typing <em>yes</em>.</p>
+<p>This is a security warning - if you want to be sure that you are indeed connecting to the computer “fitzroy.nesi.org.nz”, you will need to verify the key fingerprint with a system administrator. If you are satisfied that everything is correct, confirm by typing <em>yes</em>.</p>
 </blockquote>
-<p>We now no longer operate our own computer - <code>ssh</code> allows us to control the remote computer “login.uoa.nesi.org.nz” using the exact same commands as we would use on our own computer. Let’s try to find out who we are, as we did in the shell session:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ whoami</code></pre>
+<p>We now no longer operate our own computer - <code>ssh</code> allows us to control the remote computer “fitzroy.nesi.org.nz” using the exact same commands as we would use on our own computer. Let’s try to find out who we are, as we did in the shell session:</p>
+<pre class="{bash}"><code>-bash-4.2$ whoami</code></pre>
 <pre class="output"><code>user</code></pre>
 <p>Depending on the quality of your network connection and the geographical distance to the remote computer, you might notice some delays in the response from the remote computer.</p>
 <p>We can ask the remote computer for its name:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ uname -n</code></pre>
-<pre class="output"><code>login-01.uoa.nesi.org.nz</code></pre>
+<pre class="{bash}"><code>-bash-4.2$ uname -n</code></pre>
+<pre class="output"><code>nesi1</code></pre>
+<p>We can also ask which operating system the remote computer is running and which processor architecture it uses:</p>
+<pre class="{bash}"><code>-bash-4.2$ uname -sp</code></pre>
+<pre class="output"><code>AIX powerpc</code></pre>
+<p>Fitzroy runs on AIX, which is a UNIX variant and very similar to Linux - but not the same, which means that some things work differently compared to Linux. The POWER microprocessor architecture is also a bit different from the x86_64 microprocessor architecture which is mostly used in PCs and laptops, which means that software that runs on a PC will not run on the HPC and vice versa. We can nonetheless run things like Python or R programs on either type of computer.</p>
 <p>Let’s check where we are:</p>
-<pre><code>[user@login-01 ~]$ pwd</code></pre>
+<pre><code>-bash-4.2$ pwd</code></pre>
 <pre class="output"><code>/home/user</code></pre>
 <p>This will probably give a different answer than running the same command on our own computer - we are now using the file system of the remote machine.</p>
 <p>Let’s get a list of all files in our current working directory:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ ls</code></pre>
+<pre class="{bash}"><code>-bash-4.2$ ls</code></pre>
 <p>This should produce no output - our account is new and we haven’t done anything yet.</p>
 <p>To keep things tidy, we will first create a new work directory:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ mkdir matmul</code></pre>
+<pre class="{bash}"><code>-bash-4.2$ mkdir matmul</code></pre>
 <p>As expected, a new directory appears:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ ls</code></pre>
+<pre class="{bash}"><code>-bash-4.2$ ls</code></pre>
 <pre class="output"><code>matmul</code></pre>
 <p>We can leave the remote computer again by using the <code>exit</code> command:</p>
-<pre class="{bash}"><code>[user@login-01 ~]$ exit</code></pre>
+<pre class="{bash}"><code>-bash-4.2$ exit</code></pre>
 <pre class="output"><code>logout
-Connection to login.uoa.nesi.org.nz closed.</code></pre>
+Connection to fitzroy.nesi.org.nz closed.</code></pre>
 <p>We are now back on our own computer:</p>
 <pre class="{bash}"><code>$ uname -n</code></pre>
 <pre class="output"><code>mylaptop</code></pre>
 <p>The name will depend on your computer setup.</p>
 <blockquote>
 <h2>Challenge</h2>
-<p>User “nelle” wants to connect to “login.uoa.nesi.org.nz” and remotely create a directory called “hpc_project” and a text file “README” inside the new directory. Which of the following solutions are correct?</p>
+<p>User “nelle” wants to connect to “fitzroy.nesi.org.nz” and remotely create a directory called “hpc_project” and a text file “README” inside the new directory. Which of the following solutions are correct?</p>
 <ol style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="{bash}"><code>$ mkdir hpc_project
 $ nano hpc_project/README
-$ ssh nelle@login.uoa.nesi.org.nz</code></pre>
+$ ssh nelle@fitzroy.nesi.org.nz</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre class="{bash}"><code>$ ssh nelle@login.uoa.nesi.org.nz
+<pre class="{bash}"><code>$ ssh nelle@fitzroy.nesi.org.nz
 $ mkdir hpc_project
 $ nano hpc_project/README</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre class="{bash}"><code>$ ssh login.uoa.nesi.org.nz
+<pre class="{bash}"><code>$ ssh fitzroy.nesi.org.nz
 $ mkdir hpc_project
 $ nano hpc_project/README</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre class="{bash}"><code>$ ssh nelle@login.nesi.org.nz
+<pre class="{bash}"><code>$ ssh nelle@login.fitzroy.nesi.org.nz
 $ mkdir hpc_project
 $ nano hpc_project/README</code></pre>
 </blockquote>

@@ -4,40 +4,48 @@ Using `git` works just the same on the remote computer as on our laptop. It also
 
 Let's first log on again:
 ``` {.bash}
-$ ssh user@login.uoa.nesi.org.nz
+$ ssh user@fitzroy.nesi.org.nz
 ```
 
 We will use the directory that we created previously:
 ```
-[user@login-01 ~]$ cd matmul
+-bash-4.2$ cd matmul
 ```
-~~~ {.output}
-[user@login-01 matmul]$
-~~~
 
 The `git` command for downloading a repository from GitHub is:
 ```
-[user@login-01 ~]$ git clone https://github.com/tinyendian/swcmeethpc.git
+-bash-4.2$ git clone https://github.com/tinyendian/swcmeethpc.git
 ```
 ~~~ {.output}
-Initialized empty Git repository in /home/user/matmul/swcmeethpc/.git/
-remote: Counting objects: 69, done.
-remote: Compressing objects: 100% (31/31), done.
-remote: Total 69 (delta 36), reused 69 (delta 36), pack-reused 0
-Unpacking objects: 100% (69/69), done.
-[user@login-01 matmul]$
+Cloning into 'swcmeethpc'...
+remote: Counting objects: 120, done.
+remote: Total 120 (delta 0), reused 0 (delta 0), pack-reused 120
+Receiving objects: 100% (120/120), 309.33 KiB | 133 KiB/s, done.
+Resolving deltas: 100% (69/69), done.
 ~~~
 
-Let's have a look at the repository contents:
+The repository has a separate branch with Fitzroy-specific examples:
 ```
-[user@login-01 ~]$ cd swcmeethpc
-[user@login-01 ~]$ ls
+-bash-4.2$ cd swcmeethpc
+-bash-4.2$ git checkout fitzroy
 ```
 ~~~ {.output}
-01-ssh.html  03-preparing.html     05-scheduler.html  example-03.sl  matmulti1.py  README.html
-01-ssh.md    03-preparing.md       05-scheduler.md    example-04.sl  matmulti2.py  README.md
-02-git.html  04-optimisation.html  example-01.sl      example-05.sl  nvblas.conf   ssh-keypairs.html
-02-git.md    04-optimisation.md    example-02.sl      images         nvblas.log    ssh-keypairs.md
+Branch fitzroy set up to track remote branch fitzroy from origin.
+Switched to a new branch 'fitzroy'
+~~~
+
+Let's look at the output:
+```
+-bash-4.2$ ls
+```
+~~~ {.output}
+01-ssh.html           04-optimisation.md    example-05.sl         nvblas.conf
+01-ssh.md             05-scheduler.html     images                nvblas.log
+02-git.html           05-scheduler.md       matmulti1.f90         ssh-keypairs.html
+02-git.md             example-01.sl         matmulti1.py          ssh-keypairs.md
+03-preparing.html     example-02.sl         matmulti2.f90
+03-preparing.md       example-03.sl         matmulti2.py
+04-optimisation.html  example-04.sl         matmulti3.f90
 ~~~
 
 > ## Challenge

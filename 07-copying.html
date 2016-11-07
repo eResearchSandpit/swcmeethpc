@@ -61,38 +61,53 @@ img {
 
 
 
-<div id="cloning-a-git-repository" class="section level1">
-<h1>Cloning a git repository</h1>
-<p>Using <code>git</code> works just the same on the remote computer as on our laptop. It also highlights one of the many strengths of version control: we can develop code on our own computer and easily transfer it to a HPC system using a repository service, such as GitHub. As <code>git</code> will keep track of changes, we can always make sure that we use the correct version of our code.</p>
-<p>Let’s first log on again:</p>
-<pre class="bash"><code>$ ssh user@fitzroy.nesi.org.nz</code></pre>
-<p>We will use the directory that we created previously:</p>
-<pre><code>-bash-4.2$ cd matmul</code></pre>
-<p>The <code>git</code> command for downloading a repository from GitHub is:</p>
-<pre><code>-bash-4.2$ git clone https://github.com/tinyendian/swcmeethpc.git</code></pre>
-<pre class="output"><code>Cloning into 'swcmeethpc'...
-remote: Counting objects: 120, done.
-remote: Total 120 (delta 0), reused 0 (delta 0), pack-reused 120
-Receiving objects: 100% (120/120), 309.33 KiB | 133 KiB/s, done.
-Resolving deltas: 100% (69/69), done.</code></pre>
-<p>The repository has a separate branch with Fitzroy-specific examples:</p>
-<pre><code>-bash-4.2$ cd swcmeethpc
--bash-4.2$ git checkout fitzroy</code></pre>
-<pre class="output"><code>Branch fitzroy set up to track remote branch fitzroy from origin.
-Switched to a new branch 'fitzroy'</code></pre>
-<p>Let’s look at the output:</p>
-<pre><code>-bash-4.2$ ls</code></pre>
-<pre class="output"><code>01-ssh.html           04-optimisation.md    example-05.sl         nvblas.conf
-01-ssh.md             05-scheduler.html     images                nvblas.log
-02-git.html           05-scheduler.md       matmulti1.f90         ssh-keypairs.html
-02-git.md             example-01.sl         matmulti1.py          ssh-keypairs.md
-03-preparing.html     example-02.sl         matmulti2.f90
-03-preparing.md       example-03.sl         matmulti2.py
-04-optimisation.html  example-04.sl         matmulti3.f90</code></pre>
-<blockquote>
-<h2>Challenge</h2>
-<p>Can you think of reasons why you would need to make changes to your git repository on the remote computer? How would you carry these changes over to the repository on your own computer?</p>
-</blockquote>
+<div id="copying-data" class="section level1">
+<h1>Copying data</h1>
+<p>Large data files are not usually part of repositories, especially when data is in binary format. User space on free services like GitHub is also limited, so we will need to find a way to copy files forth and back between our own computer and the HPC. Depending on the number of files and file sizes, different programs are available to do the job.</p>
+<p>Let’s first quit our HPC session:</p>
+<pre><code>-bash-4.2$ exit</code></pre>
+<pre class="output"><code>logout
+Connection to fitzroy.nesi.org.nz closed.</code></pre>
+<p>We can now use the <code>scp</code> program to copy our output file from the HPC to our own computer:</p>
+<pre><code>-bash-4.2$ scp user@fitzroy.nesi.org.nz:matmul/swcmeethpc/python-example_1080085.out .</code></pre>
+<pre class="output"><code>user@fitzroy.nesi.org.nz's password:
+python-example_1080085.out                    100%  119     0.1KB/s   00:00</code></pre>
+<p>The <code>scp</code> program works much the same as the <code>cp</code> program for copying files, but we now needed to include our user name and the name of the HPC to tell <code>scp</code> that it should contact another computer. Note that <code>scp</code> uses <code>ssh</code> under the hood to encrypt files.</p>
+<p>It is usually necessary to transfer more than just one file, and given that transfer speed over the internet is limited, it is also a good idea to compress files before transmission. The <code>tar</code> program provides an easy way to bundle up any number of files into an archive and compress it, despite its rather advanced age (<code>tar</code> is an abbreviation of “tape archive”, describing the original purpose of the <code>tar</code> program).</p>
+<p>Let’s create a new directory with a number of files on our own computer:</p>
+<pre><code>$ mkdir food
+$ echo &quot;Toast, jam, tea&quot; &gt; food/breakfast.txt
+$ echo &quot;Salad, sandwich, water&quot; &gt; food/lunch.txt
+$ echo &quot;Soup, bread, fruit salad&quot; &gt; food/dinner.txt</code></pre>
+<p>We can now pack up the directory and compress it into a single “tarball”:</p>
+<pre><code>$ tar czf food.tar.gz food</code></pre>
+<p>The option “c” stands for “create” - we want to create a new archive. Passing “z” asks <code>tar</code> to compress the archive using the <code>gzip</code> compression program, which is available for all platforms. The last option “f” lets us set the name of the archive, where we will choose “food.tar.gz”. The suffix “.tar.gz” is a convention to show that this is a <code>gzip</code>-compressed <code>tar</code> archive.</p>
+<p>Let’s look at the results:</p>
+<pre><code>$ ls food*</code></pre>
+<pre class="output"><code>food.tar.gz
+
+food:
+breakfast.txt  dinner.txt  lunch.txt</code></pre>
+<p>As expected, we have a directory with three text files in it, and a <code>tar</code> archive. We can now transfer the archive to the remote computer using <code>scp</code>:</p>
+<pre><code>$ scp food.tar.gz user@fitzroy.nesi.org.nz:~/</code></pre>
+<pre class="output"><code>user@fitzroy.nesi.org.nz's password:
+food.tar.gz                                              100%  271     0.3KB/s   00:00</code></pre>
+<p>Note that the target <code>user@fitzroy.nesi.org.nz:~/</code> asks <code>scp</code> to copy the file into our home directory on Fitzroy. Let’s log on again and unpack the files:</p>
+<pre><code>$ ssh user@fitzroy.nesi.org.nz</code></pre>
+<pre><code>-bash-4.2$ gtar xzf food.tar.gz</code></pre>
+<p>Note that we need to use <code>gtar</code> instead of <code>tar</code> on Fitzroy: Fitzroy’s operating system AIX has its own implementation of <code>tar</code>, which does not support all features of “GNU tar”.</p>
+<p>We should now have a new folder with our text files:</p>
+<pre><code>-bash-4.2$ ls food*</code></pre>
+<pre class="output"><code>food.tar.gz
+
+food:
+breakfast.txt  dinner.txt  lunch.txt</code></pre>
+<p>There are many other ways to transfer files:</p>
+<ul>
+<li>The <code>sftp</code> program can be used to open an interactive file transfer session</li>
+<li>The <code>rsync</code> program can be used to synchronise entire directory trees between our computer and the HPC</li>
+<li>High-performance data transfer services, such as “Globus”, can be used if you need to transfer very large amounts of data, but they require specialised computers (so-called “data transfer nodes”) that are connected to fast netoworks at your own institution and the HPC</li>
+</ul>
 </div>
 
 

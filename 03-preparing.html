@@ -63,21 +63,16 @@ img {
 
 <div id="preparing-code-for-running-on-a-hpc" class="section level1">
 <h1>Preparing code for running on a HPC</h1>
-<p>We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our case is a lot simpler, but we still have to make sure that everything works.</p>
-<p>In the case of the Pan HPC, we need to use a build node to perform test runs with our program. Since HPCs consist of many computers that are connected in a fast network, they are called “nodes”. We will log on to another computer from the login node:</p>
-<pre class="{bash}"><code>[login-01 ~]$ ssh build-sb</code></pre>
-<pre class="output"><code>[user@build-sb ~]$</code></pre>
-<p>We are now yet again on a different machine:</p>
-<pre class="{bash}"><code>[user@build-sb ~]$ uname -n</code></pre>
-<pre class="output"><code>build-sb</code></pre>
-<p>Note that we have effectively chained the <code>ssh</code> sessions: our computer connects to the login node, and the login node connects to the build node.</p>
-<p>We are still in the same user space, since both the login node and the build node have access to the same file system on the network - both computers can see the exact same files:</p>
-<pre><code>[user@build-sb ~]$ pwd</code></pre>
-<pre class="output"><code>/home/user</code></pre>
-<p>Let’s go to our example again and check the Python version that is installed on the system:</p>
-<pre><code>[user@build-sb ~]$ cd matmul/swcmeethpc
-[user@build-sb swcmeethpc]$ python --version</code></pre>
-<pre class="output"><code>Python 2.6.6</code></pre>
+<p>We are no longer working on our own computer, so we will need to prepare our code to run on the HPC. For a larger project, this can take many hours and could involve transfering data, building an executable program, and running test cases to make sure that the output of our program is exactly what we want. Our examples are a lot simpler, but we still have to make sure that everything works.</p>
+<p>We will need Python for our first example. Let’s check which version of Python is available on Fitzroy:</p>
+<pre><code>-bash-4.2$ cd matmul/swcmeethpc
+-bash-4.2$ python --version</code></pre>
+<pre class="output"><code>Python 2.6.7</code></pre>
+<p>The default version does not provide the NumPy package that we will need for our examples. We will need to load a different version, which can be done with the <code>module</code> command:</p>
+<pre><code>-bash-4.2$ module load python/2.7.5
+-bash-4.2$ python --version</code></pre>
+<pre class="output"><code>Python 2.7.5</code></pre>
+<p>The module command is a very easy way to customise the work environment, allowing us to choose between different software packages. A complete list of available packages can be shown using the command <code>module avail</code>.</p>
 <div id="matrix-multiplication" class="section level2">
 <h2>Matrix Multiplication</h2>
 <p>Matrix multiplication is a classical performance test for computers: multiplying two N x N (real) matrices requires <span class="math">\(N\)</span> multiplications and <span class="math">\(N - 1\)</span> additions, which is a total of <span class="math">\(2N-1\)</span> “floating-point” operations for each element. We have <span class="math">\(N^2\)</span> elements in the matrix and thus need a grand total of <span class="math">\(N^2(2N - 1)\)</span> floating-point operations. For large values of <span class="math">\(N\)</span> the total number of floating-point operations is approximately <span class="math">\(2N^3\)</span>, the so-called complexity of matrix multiplication is therefore <span class="math">\(O(n^3)\)</span>. A fast computer can perform many floating-point operations per second (“FLOPS”), computational performance is thus often measured in FLOPS. Processors in modern laptop computers easily reach several GFLOPS, or billions of floating-point operations per second. Large HPC systems offer PFLOPS, or <span class="math">\(10^{15}\)</span> FLOPS.</p>
@@ -85,20 +80,20 @@ img {
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATkAAAA0CAAAAADUYxBHAAAACXBIWXMAAAB4AAAAeACd9VpgAAAEwUlEQVRo3u1bW5GEMBAcC7GAhVjAAhawEAtYwAIWsICFWIgFDgJsHszkxR7HVZGPZauAnk5vmCTTLMxvK2twHNc2pt1Tr9daEOm3eneGeGXwua/Z/P1jruL5t8IXr/rTsfYqd49yU8VEgXJTvd92m3IfoiEqCa2twIMrU04xpaBozLH+VuUM0RCVlCa4B1emXL/AlIy5WYL8vnI8hWiISgpeIzy4MuXatjDP9dUv5DlIIRqikoLHBg+uTDneFSpnhb5FOUM0Q1QMbwLlwZHKTQ1QiaBZVzMdrdzIQXQ45aqroVYFylmYJ2Y+kmz3C2yiNJUo3hp7TXMuHKVcv4xOxagJC81Wx9ehGpfbBZ5b6nEWbb5yFuaZGfjTaa/2XDWRucxQieKZ2A4coZxc1+2KygQDC6znFBuPtIDklvVHZtnKWZgIMxdJVeMnxsACaW6jEsczsR04Qrl2+c2Gmtr1iDqgnJ6+R1BkbpGQrZyFiTADipzznaASxzOxHThCOQbAWkVu20RAOZ1FBb5SqHozqeUoZ2E6zPT+cW/HeOA9SpSiEsczsR04Qjno05aziHIw0ZR1nqhFtnIWJsIMzjHii92DShzPxHbgqDG3PeKSSK5TSDn9McwdoYNk+XOrhYkwAywzSo8oRSUNT8d24ag8t2osBf68jhDa8S85QwmYB2yKqIZZ8iF/PWdhIsxcJOuCMRDjoBLF22KrJbYLRyinWoC6j08QiHJTBc2yoqrx/TfUU8FK2MJEmHlzobkgMEF8qETxTGwXrmQP0XTPqjJBCtEvMHPhspVbBjeTz1KOpxDNaDwJLls5kF37LyqbHtHLhUwfLn/MsVr9C+U8olfbCe6tphcPwmcox5HF+6vcO+Ze5Z7+tFavcu+Y87YtjlFZoNxuXf6+cgFLNdNt3TjjPc8Zc3ZhpmTMbcWuO8ZcoFiW57YenPtLykm4uPtqxJeV4ylMk0+hcJqzTPAhQs0xKkuU2zyKLyoHKUyTT6FwmjPa8wzl2ov71s26vEO5gE8dOIXBbZzRnp+VE4wNNVZTrbrlVB9S7mN4ntphXc4X/NYzMcpwdZj6nTiM3yic4Yz2/KRc20rVYu/8SWgG4zxiylmGp9dsK7bUb0WIEYary9TrxGH8RuFMaLzn/lGsj/SA9a7XZaojFqKcbXi6zbFiC/1WjBhhuLpMvTS3G79ROCs03nO/mq5FRqvR+mH/+KmIcnQN27Fiy/xWlBhhuLpMz52QkABnW71oz73joJXl2GpRG5UfPxVRjpMrJceKLfNbPWJBw9Vleu7EMlXG4SzOeM+9o9DK4mlO6lxJK0evlBwrtsxvRYnhhqvH9HzNAhiHM6GJnp+UI9NctU/SHanc9rxLQobDii3zW1FiuOHqMT1ds7qtcTgTmuj56Y2caZacTHMKZiEp5Wiv1liXc6nfihLDDVePqfu07m5rHM5wJnp+fguMCTTNbVmkPpY12NxKerWOFVvot2LEcMPVY+oz2dZwUTgTmug5todI+QfHn1SZfGIXS1FlcNSqZA6+fPZ3yqHEeLFoF+DoN3IU7x+oXDKxxOJDORz1Rg5wMc4PVC6ZWGLFshzuraYXZ8dXuW8p9/5LM5P/c3/bp7dXuVe5u9sPg7K7lvBP3IMAAAA8dEVYdENvbW1lbnQAIEltYWdlIGdlbmVyYXRlZCBieSBHTlUgR2hvc3RzY3JpcHQgKGRldmljZT1wbm1yYXcpCszMtoUAAAAASUVORK5CYII=" alt="Figure 2" /><br> Figure 2: Example of square matrix multiplication with <span class="math">\(D=2\)</span></p>
 <p>More information about computational complexity of mathematical operations is available on Wikipedia: <a href="https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations" class="uri">https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations</a>.</p>
 <p>Let’s look at a simple implementation of matrix multiplication:</p>
-<pre><code>[user@build-sb ~]$ cat matmulti1.py</code></pre>
+<pre><code>-bash-4.2$ cat matmulti1.py</code></pre>
 <p>The algorithm uses three nested loops to compute the output matrix. A timing utility is used to measure the time needed to multiply matrices with <span class="math">\(N=100\)</span> rows and columns, repeating the process several times to obtain a mean value.</p>
 <p>We can run the example directly on the remote computer:</p>
-<pre><code>[user@build-sb ~]$ python matmulti1.py</code></pre>
+<pre><code>-bash-4.2$ python matmulti1.py</code></pre>
 <pre class="python"><code>Running nested for loops 10 times...
-Best runtime [seconds]: 1.035</code></pre>
+Best runtime [seconds]: 9.944</code></pre>
 <p>The program returns the best time in seconds. Note that this number is influenced by many factors, including the type of computer on which we are running, and if there are other users on the remote computer running programs at the same time.</p>
 <p>We can use Python to calculate the FLOPS performance, given that the processor needed to perform about <span class="math">\(2N^3=2,000,000\)</span> floating-point operations to compute the result in each iteration:</p>
-<pre><code>[user@build-sb ~]$ python -c &quot;print(2.e6/1.035)&quot;</code></pre>
-<pre class="python"><code>1932367.14976</code></pre>
-<p>We achieved 1.9 MFLOPS for our example, which is far below the processor’s numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations.</p>
+<pre><code>-bash-4.2$ python -c &quot;print(2.e6/9.944)&quot;</code></pre>
+<pre class="python"><code>201126.307321</code></pre>
+<p>We achieved 200 KFLOPS for our example, which is far below the processor’s numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations. It also has to do with the age of the POWER6 microprocessor; modern processors can do a lot more FLOPS.</p>
 <blockquote>
 <h2>Challenge</h2>
-<p>Explain which program runs on which computer when you connect to a remote computer from your own laptop, and then to another remote computer from the first remote one? Which difficulties could appear when you do that? Can you always expect the same file system?</p>
+<p>How would you expect runtime to (approximately) change when doubling matrix size <span class="math">\(N\)</span>? 1. No change 2. Runtime doubles 3. Runtime extends by a factor of 4 3. Runtime extends by a factor of 8</p>
 </blockquote>
 </div>
 </div>

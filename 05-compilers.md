@@ -53,7 +53,7 @@ We will now run another example that uses ESSL (Engineering and Scientific Subro
 ** matmulti3   === End of Compilation 1 ===
 1501-510  Compilation successful for file matmulti3.f90.
 ~~~
-Note the new flag ```-lessl```, which instructs the compiler to include ESSL in our executable. The library implements the routine "DGEMM", which is part of (Basic Linear Algebra Subprograms) and performs matrix multiplications using a very fast implementation.
+Note the new flag ```-lessl```, which instructs the compiler to include ESSL in our executable. Libraries are collections of ready-made functions. ESSL implements the function "DGEMM", which is part of BLAS (Basic Linear Algebra Subprograms) and performs matrix multiplications very quickly.
 
 Let's run the code:
 ```
@@ -66,3 +66,7 @@ Let's run the code:
  Performance [GFLOPS]: 13.3082251485530634
 ~~~
 We now reach more than 13 GFLOPS, or another speedup of 5 over our own Fortran program. Compared to our original Python program, we have reached a speedup of more than 60,000...
+
+> ## Challenge
+>
+> Why is the `python` program still needed to run a code written in Python language, while the `xlf90` program is not needed to run a Fortran code? Hint: look at the files "matmulti1.py", "matmulti1.f90", and "matmulti1.x" using the `less` program; you will need to confirm that you want to look at binary file "matmulti1.x" by typing "y". Will the microprocessor understand the Python code in "matmulti1.py" or the Fortran code in "matmulti1.f90"? Can you understand the content of "matmulti1.x"?
