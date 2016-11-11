@@ -24,7 +24,6 @@ PROGRAM matmulti3
   DO i = 1, NTIMES
      CALL SYSTEM_CLOCK(tstart)
      CALL DGEMM("N", "N", SIZE, SIZE, SIZE, 1.d0, A, SIZE, B, SIZE, 0.d0, C, SIZE)
-     !!PRINT *, MAXVAL(ABS((C-MATMUL(A,B))/C))
      CALL SYSTEM_CLOCK(tstop, trate)
      best_runtime = MIN(best_runtime, DBLE(tstop-tstart)/DBLE(trate))
   END DO

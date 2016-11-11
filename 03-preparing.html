@@ -93,7 +93,13 @@ Best runtime [seconds]: 9.944</code></pre>
 <p>We achieved 200 KFLOPS for our example, which is far below the processor’s numerical capabilities - this has to do with the way in which Python runs programs, causing the processor to do much more than just floating-point operations. It also has to do with the age of the POWER6 microprocessor; modern processors can do a lot more FLOPS.</p>
 <blockquote>
 <h2>Challenge</h2>
-<p>How would you expect runtime to (approximately) change when doubling matrix size <span class="math">\(N\)</span>? 1. No change 2. Runtime doubles 3. Runtime extends by a factor of 4 3. Runtime extends by a factor of 8</p>
+<p>How would you expect runtime to (approximately) change when doubling size <span class="math">\(N\)</span> of the two matrices? Remember that the computer needs to perform approximately <span class="math">\(2N^3\)</span> floating-point operations for the multiplication.</p>
+<ol style="list-style-type: decimal">
+<li>No change</li>
+<li>Runtime doubles</li>
+<li>Runtime increases by a factor of 4</li>
+<li>Runtime increases by a factor of 8</li>
+</ol>
 </blockquote>
 </div>
 </div>

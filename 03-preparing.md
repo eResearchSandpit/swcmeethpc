@@ -59,8 +59,9 @@ We achieved 200 KFLOPS for our example, which is far below the processor's numer
 
 > ## Challenge
 >
-> How would you expect runtime to (approximately) change when doubling matrix size $N$?
+> How would you expect runtime to (approximately) change when doubling size $N$ of the two matrices? Remember that the computer needs to perform approximately $2N^3$ floating-point operations for the multiplication.
+>
 > 1. No change
 > 2. Runtime doubles
-> 3. Runtime extends by a factor of 4
-> 3. Runtime extends by a factor of 8
+> 3. Runtime increases by a factor of 4
+> 4. Runtime increases by a factor of 8

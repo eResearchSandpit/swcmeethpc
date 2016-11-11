@@ -23,7 +23,6 @@ PROGRAM matmulti1
   DO i = 1, NTIMES
      CALL SYSTEM_CLOCK(tstart)
      CALL MATMULTIPLY(SIZE, A, B, C)
-     !!PRINT *, MAXVAL(ABS(C-MATMUL(A,B)))
      CALL SYSTEM_CLOCK(tstop, trate)
      best_runtime = MIN(best_runtime, DBLE(tstop-tstart)/DBLE(trate))
   END DO
