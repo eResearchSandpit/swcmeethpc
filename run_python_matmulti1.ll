@@ -6,7 +6,7 @@
 
 # @ job_name = python-example
 # @ class = General
-# @ account_no = hpcf
+# @ account_no = nesi00321
 # @ job_type = parallel
 # @ notification = never
 # @ wall_clock_limit = 00:05:00
