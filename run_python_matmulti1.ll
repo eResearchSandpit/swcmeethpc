@@ -5,7 +5,7 @@
 #
 
 # @ job_name = python-example
-# @ class = General
+# @ class = Backfill
 # @ account_no = nesi00321
 # @ job_type = parallel
 # @ notification = never
